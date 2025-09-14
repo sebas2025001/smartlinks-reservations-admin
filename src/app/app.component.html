@@ -1,11 +1,211 @@
-<!-- Simplified Admin Shell -->
-<header class="p-4 border-b flex items-center justify-between bg-surface shadow-sm">
-  <h1 class="text-xl font-semibold">Smartlinks Reservations Admin</h1>
-  <nav class="flex gap-4 text-sm">
-    <!-- future nav links -->
-    <a mat-button disabled>Reservas</a>
-  </nav>
-</header>
-<main class="p-6">
-  <router-outlet></router-outlet>
-</main>
+<div class="admin-dashboard">
+  <!-- Hero Header Section -->
+  <div class="hero-header">
+    <div class="hero-content">
+      <h1 class="hero-title">Ofertas Locales - Reservas</h1>
+      <p class="hero-subtitle">Gestiona y supervisa todas las reservas de ofertas locales</p>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nav-tabs-container">
+    <div class="nav-tabs">
+      <button class="nav-tab active">
+        <i class="pi pi-list"></i>
+        Listado de Reservas
+      </button>
+      <button class="nav-tab">
+        <i class="pi pi-chart-bar"></i>
+        Dashboard
+      </button>
+      <button class="nav-tab">
+        <i class="pi pi-question-circle"></i>
+        Ayuda y FAQs
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Search and Filters Section -->
+    <div class="filters-section">
+      <h2 class="filters-title">Búsqueda y Filtros</h2>
+      
+      <div class="filters-grid">
+        <!-- Search Input -->
+        <div class="filter-group">
+          <label class="filter-label">Búsqueda</label>
+          <div class="search-input-wrapper">
+            <i class="pi pi-search search-icon"></i>
+            <input 
+              type="text" 
+              class="search-input" 
+              placeholder="Buscar por PNR, cliente, oferta o marketplace..."
+              value="">
+          </div>
+        </div>
+
+        <!-- Payment Status Filter -->
+        <div class="filter-group">
+          <label class="filter-label">Estado de Pago</label>
+          <div class="select-wrapper">
+            <select class="filter-select">
+              <option value="">Todos</option>
+              <option value="pending">Pago Pendiente</option>
+              <option value="success">Pago Exitoso</option>
+              <option value="failed">Pago Fallido</option>
+            </select>
+            <i class="pi pi-chevron-down select-arrow"></i>
+          </div>
+        </div>
+
+        <!-- Reservation Status Filter -->
+        <div class="filter-group">
+          <label class="filter-label">Estado de Reserva</label>
+          <div class="select-wrapper">
+            <select class="filter-select">
+              <option value="">Todos</option>
+              <option value="confirmed">Confirmada</option>
+              <option value="pending">Pendiente</option>
+              <option value="cancelled">Cancelada</option>
+            </select>
+            <i class="pi pi-chevron-down select-arrow"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Controls -->
+    <div class="table-controls">
+      <div class="table-controls-left">
+        <span class="show-label">Mostrar:</span>
+        <div class="select-wrapper small">
+          <select class="control-select">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
+          <i class="pi pi-chevron-down select-arrow"></i>
+        </div>
+        <span class="per-page-label">por página</span>
+      </div>
+
+      <div class="table-controls-right">
+        <div class="date-range">
+          <i class="pi pi-calendar date-icon"></i>
+          <span class="date-label">Rango de fechas:</span>
+          <input type="text" class="date-input" placeholder="dd/mm/aaaa" value="">
+          <span class="date-separator">a</span>
+          <input type="text" class="date-input" placeholder="dd/mm/aaaa" value="">
+        </div>
+        
+        <div class="export-wrapper">
+          <button class="export-btn">
+            <i class="pi pi-download"></i>
+            Exportar
+            <i class="pi pi-chevron-down"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="data-table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="checkbox-col">
+              <input type="checkbox" class="table-checkbox">
+            </th>
+            <th class="sortable">
+              Fecha de Reserva (DD/MM/AAAA)
+              <i class="pi pi-sort-alt sort-icon"></i>
+            </th>
+            <th class="sortable">
+              Código
+              <i class="pi pi-sort-alt sort-icon"></i>
+            </th>
+            <th class="sortable">
+              Tenant
+              <i class="pi pi-sort-alt sort-icon"></i>
+            </th>
+            <th class="sortable">
+              Estado de Pago
+              <i class="pi pi-sort-alt sort-icon"></i>
+            </th>
+            <th class="sortable">
+              Estado de Reserva
+              <i class="pi pi-sort-alt sort-icon"></i>
+            </th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-row">
+            <td>
+              <input type="checkbox" class="table-checkbox">
+            </td>
+            <td class="date-cell">
+              <i class="pi pi-calendar"></i>
+              31/08/2025, 18:48
+            </td>
+            <td class="code-cell">LO GYMB 939L</td>
+            <td class="tenant-cell">
+              <div class="tenant-name">BAC Honduras</div>
+              <div class="tenant-type">Marketplace</div>
+            </td>
+            <td>
+              <span class="status-badge success">Pago Exitoso</span>
+            </td>
+            <td>
+              <span class="status-badge warning">Pago Pendiente</span>
+            </td>
+            <td class="value-cell">646 Millas Plus + $96.00 USD</td>
+          </tr>
+          <tr class="table-row">
+            <td>
+              <input type="checkbox" class="table-checkbox">
+            </td>
+            <td class="date-cell">
+              <i class="pi pi-calendar"></i>
+              30/08/2025, 03:11
+            </td>
+            <td class="code-cell">LO E2UF IT42</td>
+            <td class="tenant-cell">
+              <div class="tenant-name">BAC Costa Rica</div>
+              <div class="tenant-type">Marketplace</div>
+            </td>
+            <td>
+              <span class="status-badge warning">Pago Pendiente</span>
+            </td>
+            <td>
+              <span class="status-badge info">Emitida</span>
+            </td>
+            <td class="value-cell">684 Millas Plus + $102.00 USD</td>
+          </tr>
+          <tr class="table-row">
+            <td>
+              <input type="checkbox" class="table-checkbox">
+            </td>
+            <td class="date-cell">
+              <i class="pi pi-calendar"></i>
+              28/08/2025, 17:05
+            </td>
+            <td class="code-cell">LO YTHE HDE5</td>
+            <td class="tenant-cell">
+              <div class="tenant-name">BAC Panamá</div>
+              <div class="tenant-type">Marketplace</div>
+            </td>
+            <td>
+              <span class="status-badge warning">Pago Pendiente</span>
+            </td>
+            <td>
+              <span class="status-badge warning">Pago Pendiente</span>
+            </td>
+            <td class="value-cell">476 Cashback + $71.00 USD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
