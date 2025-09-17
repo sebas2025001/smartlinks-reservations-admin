@@ -20,108 +20,66 @@ export class ReservationsMockRepository implements IReservationsRepository {
   private mockData: ReservationBase[] = [
     {
       id: '1',
-      pnr: 'LOC001',
+      pnr: 'LO GYMB 939L',
       productType: 'LOCAL_OFFER',
       customerName: 'Juan Pérez',
       customerEmail: 'juan.perez@email.com',
-      status: 'CONFIRMED',
+      status: 'PENDING',
       paymentStatus: 'COMPLETED',
-      createdAt: new Date('2025-01-10T10:00:00Z'),
-      updatedAt: new Date('2025-01-10T10:30:00Z'),
-      expiresAt: new Date('2025-03-10T23:59:59Z'),
-      totalAmount: 150000,
-      currency: 'COP',
+      createdAt: new Date('2025-08-31T18:48:00Z'),
+      updatedAt: new Date('2025-08-31T18:48:00Z'),
+      expiresAt: new Date('2025-12-31T23:59:59Z'),
+      totalAmount: 646000,
+      currency: 'USD',
       marketplace: {
         id: 'mp1',
-        name: 'Smartlinks Colombia',
+        name: 'BAC Honduras',
         agency: 'Ultragroup'
       },
       priority: 'NORMAL',
-      tags: ['oferta-local', 'restaurante']
+      tags: ['oferta-local']
     },
     {
       id: '2',
-      pnr: 'LOC002',
+      pnr: 'LO E2UF IT42',
       productType: 'LOCAL_OFFER',
       customerName: 'María García',
       customerEmail: 'maria.garcia@email.com',
-      status: 'PENDING',
+      status: 'CONFIRMED',
       paymentStatus: 'PENDING',
-      createdAt: new Date('2025-01-11T14:00:00Z'),
-      updatedAt: new Date('2025-01-11T14:00:00Z'),
-      expiresAt: new Date('2025-03-11T23:59:59Z'),
-      totalAmount: 250000,
-      currency: 'COP',
+      createdAt: new Date('2025-08-30T03:11:00Z'),
+      updatedAt: new Date('2025-08-30T03:11:00Z'),
+      expiresAt: new Date('2025-12-30T23:59:59Z'),
+      totalAmount: 684000,
+      currency: 'USD',
       marketplace: {
-        id: 'mp1',
-        name: 'Smartlinks Colombia',
-        agency: 'Ultragroup'
-      },
-      priority: 'HIGH',
-      tags: ['oferta-local', 'spa']
-    },
-    {
-      id: '3',
-      pnr: 'LOC003',
-      productType: 'LOCAL_OFFER',
-      customerName: 'Carlos López',
-      customerEmail: 'carlos.lopez@email.com',
-      status: 'CANCELLED',
-      paymentStatus: 'REFUNDED',
-      createdAt: new Date('2025-01-09T09:00:00Z'),
-      updatedAt: new Date('2025-01-09T16:00:00Z'),
-      expiresAt: new Date('2025-03-09T23:59:59Z'),
-      totalAmount: 75000,
-      currency: 'COP',
-      marketplace: {
-        id: 'mp1',
-        name: 'Smartlinks Colombia',
-        agency: 'Ultragroup'
-      },
-      priority: 'LOW',
-      tags: ['oferta-local', 'entretenimiento']
-    },
-    {
-      id: '4',
-      pnr: 'LOC004',
-      productType: 'LOCAL_OFFER',
-      customerName: 'Ana Rodríguez',
-      customerEmail: 'ana.rodriguez@email.com',
-      status: 'COMPLETED',
-      paymentStatus: 'COMPLETED',
-      createdAt: new Date('2025-01-08T11:00:00Z'),
-      updatedAt: new Date('2025-01-08T18:00:00Z'),
-      expiresAt: new Date('2025-03-08T23:59:59Z'),
-      totalAmount: 320000,
-      currency: 'COP',
-      marketplace: {
-        id: 'mp1',
-        name: 'Smartlinks Colombia',
+        id: 'mp2',
+        name: 'BAC Costa Rica',
         agency: 'Ultragroup'
       },
       priority: 'NORMAL',
-      tags: ['oferta-local', 'turismo']
+      tags: ['oferta-local']
     },
     {
-      id: '5',
-      pnr: 'LOC005',
+      id: '3',
+      pnr: 'LO YTHE HDE5',
       productType: 'LOCAL_OFFER',
-      customerName: 'Diego Martínez',
-      customerEmail: 'diego.martinez@email.com',
-      status: 'CONFIRMED',
-      paymentStatus: 'COMPLETED',
-      createdAt: new Date('2025-01-12T16:00:00Z'),
-      updatedAt: new Date('2025-01-12T16:15:00Z'),
-      expiresAt: new Date('2025-03-12T23:59:59Z'),
-      totalAmount: 180000,
-      currency: 'COP',
+      customerName: 'Carlos López',
+      customerEmail: 'carlos.lopez@email.com',
+      status: 'PENDING',
+      paymentStatus: 'PENDING',
+      createdAt: new Date('2025-08-28T17:05:00Z'),
+      updatedAt: new Date('2025-08-28T17:05:00Z'),
+      expiresAt: new Date('2025-12-28T23:59:59Z'),
+      totalAmount: 476000,
+      currency: 'USD',
       marketplace: {
-        id: 'mp1',
-        name: 'Smartlinks Colombia',
+        id: 'mp3',
+        name: 'BAC Panamá',
         agency: 'Ultragroup'
       },
-      priority: 'URGENT',
-      tags: ['oferta-local', 'salud']
+      priority: 'NORMAL',
+      tags: ['oferta-local']
     }
   ];
 

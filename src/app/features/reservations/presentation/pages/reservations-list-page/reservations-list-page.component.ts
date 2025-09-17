@@ -1,23 +1,33 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ReservationsFacade } from '@features/reservations/application/facades/reservations.facade';
-import { ReservationsTableComponent, ReservationTableFilters, ReservationTableEvent, ReservationTableSort, ReservationTablePagination } from '@shared/ui/components/reservations-table/reservations-table.component';
-import { StatsCardsSectionComponent, type StatsCardsData } from '@shared/ui/molecules/stats-cards-section/stats-cards-section.component';
-import { ReservationBase } from '@shared/domain/models/reservation-base.model';
+import { ReservationBase, ReservationStatus, PaymentStatus } from '@shared/domain/models/reservation-base.model';
 
 // PrimeNG Imports for notifications
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { TagModule } from 'primeng/tag';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-reservations-list-page',
   standalone: true,
   imports: [
     CommonModule,
-    ReservationsTableComponent,
-    StatsCardsSectionComponent,
-    ToastModule
+    FormsModule,
+    ToastModule,
+    TableModule,
+    ButtonModule,
+    DropdownModule,
+    CalendarModule,
+    TagModule,
+    InputTextModule
   ],
   templateUrl: './reservations-list-page.component.html',
   styleUrls: ['./reservations-list-page.component.scss']
@@ -33,13 +43,35 @@ export class ReservationsListPageComponent implements OnInit {
 
   // Component state
   exporting = false;
+  searchTerm = '';
+  selectedPaymentStatus: any = null;
+  selectedReservationStatus: any = null;
+  pageSize = 10;
+  startDate: Date | null = null;
+  endDate: Date | null = null;
+  selectedReservations: ReservationBase[] = [];
 
-  // Default pagination for template
-  defaultPagination: ReservationTablePagination = {
-    page: 0,
-    size: 20,
-    totalItems: 0
-  };
+  // Dropdown options
+  paymentStatusOptions = [
+    { label: 'Todos', value: null },
+    { label: 'Pago Pendiente', value: 'PENDING' },
+    { label: 'Pago Exitoso', value: 'COMPLETED' },
+    { label: 'Pago Fallido', value: 'FAILED' }
+  ];
+
+  reservationStatusOptions = [
+    { label: 'Todos', value: null },
+    { label: 'Confirmada', value: 'CONFIRMED' },
+    { label: 'Pendiente', value: 'PENDING' },
+    { label: 'Cancelada', value: 'CANCELLED' }
+  ];
+
+  pageSizeOptions = [
+    { label: '10', value: 10 },
+    { label: '25', value: 25 },
+    { label: '50', value: 50 }
+  ];
+
 
   ngOnInit(): void {
     this.loadReservations();
@@ -49,33 +81,21 @@ export class ReservationsListPageComponent implements OnInit {
     this.facade.load();
   }
 
-  onFiltersChange(filters: ReservationTableFilters): void {
-    this.facade.search(filters.global || '');
+  onSearchChange(): void {
+    this.onFiltersChange();
   }
 
-  onActionEvent(event: ReservationTableEvent): void {
-    switch (event.type) {
-      case 'view':
-        this.viewReservation(event.reservation);
-        break;
-      case 'edit':
-        this.editReservation(event.reservation);
-        break;
-      case 'cancel':
-        this.cancelReservation(event.reservation);
-        break;
-      case 'duplicate':
-        this.duplicateReservation(event.reservation);
-        break;
-    }
+  onFiltersChange(): void {
+    // Apply filters logic here
+    this.facade.search(this.searchTerm);
   }
 
-  onSortChange(sort: ReservationTableSort): void {
-    this.facade.sort(sort.field as keyof ReservationBase, sort.order);
+  onPageSizeChange(): void {
+    this.facade.changePageSize(this.pageSize);
   }
 
-  onPageChange(pagination: ReservationTablePagination): void {
-    this.facade.loadPage(pagination.page);
+  onViewReservation(reservation: ReservationBase): void {
+    this.router.navigate(['/reservas', reservation.id]);
   }
 
   onRefresh(): void {
@@ -110,24 +130,75 @@ export class ReservationsListPageComponent implements OnInit {
     }
   }
 
-  private viewReservation(reservation: ReservationBase): void {
-    this.router.navigate(['/reservas', reservation.id]);
+  // Formatting methods
+  formatDateTime(date: Date): string {
+    return new Intl.DateTimeFormat('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).format(date);
   }
 
-  private editReservation(reservation: ReservationBase): void {
-    this.router.navigate(['/reservas', reservation.id], {
-      queryParams: { mode: 'edit' }
-    });
+  formatValue(reservation: ReservationBase): string {
+    // Mock format similar to the reference image
+    const amount = reservation.totalAmount;
+    const currency = reservation.currency;
+    
+    if (currency === 'COP') {
+      const miles = Math.floor(amount / 1000);
+      const usd = Math.floor(amount / 4000);
+      return `${miles} Millas Plus + $${usd}.00 USD`;
+    }
+    
+    return `$${amount.toLocaleString()} ${currency}`;
   }
 
-  getStatsCardsData(reservations: ReservationBase[] | null): StatsCardsData {
-    if (!reservations) {
-      return {
-        totalReservations: 0,
-        confirmedReservations: 0,
-        pendingReservations: 0,
-        showTrends: false
-      };
+  // Status label methods
+  getPaymentStatusLabel(status: PaymentStatus): string {
+    const labels = {
+      'PENDING': 'Pago Pendiente',
+      'COMPLETED': 'Pago Exitoso',
+      'FAILED': 'Pago Fallido',
+      'REFUNDED': 'Reembolsado'
+    };
+    return labels[status] || status;
+  }
+
+  getReservationStatusLabel(status: ReservationStatus): string {
+    const labels = {
+      'PENDING': 'Pago Pendiente',
+      'CONFIRMED': 'Emitida',
+      'CANCELLED': 'Cancelada',
+      'COMPLETED': 'Completada',
+      'EXPIRED': 'Expirada'
+    };
+    return labels[status] || status;
+  }
+
+  getPaymentStatusSeverity(status: PaymentStatus): 'success' | 'info' | 'warning' | 'danger' | 'secondary' {
+    const severityMap = {
+      'COMPLETED': 'success' as const,
+      'PENDING': 'warning' as const,
+      'FAILED': 'danger' as const,
+      'REFUNDED': 'info' as const
+    };
+    return severityMap[status] || 'secondary';
+  }
+
+  getReservationStatusSeverity(status: ReservationStatus): 'success' | 'info' | 'warning' | 'danger' | 'secondary' {
+    const severityMap = {
+      'CONFIRMED': 'info' as const,
+      'PENDING': 'warning' as const,
+      'CANCELLED': 'danger' as const,
+      'COMPLETED': 'success' as const,
+      'EXPIRED': 'secondary' as const
+    };
+    return severityMap[status] || 'secondary';
+  }
+}
     }
 
     const confirmedCount = reservations.filter(r => r.status === 'CONFIRMED').length;
