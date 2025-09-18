@@ -13,6 +13,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { Observable } from 'rxjs';
 import { ReservationsFacade } from '../../../application/facades/reservations.facade';
 import { ReservationBase } from '../../../../../shared/domain/models/reservation-base.model';
+import { UiConfigService } from '../../../../../shared/services/ui-config.service';
+import { inject } from '@angular/core';
 
 interface DropdownOption {
   label: string;
@@ -54,6 +56,9 @@ export class ReservationsListPageComponent implements OnInit {
   // Pagination properties
   rowsPerPage: number = 10;
   
+  // Export loading state
+  exporting: boolean = false;
+  
   // Dropdown options
   paymentStatusOptions: DropdownOption[] = [
     { label: 'Todos', value: 'all' },
@@ -71,11 +76,13 @@ export class ReservationsListPageComponent implements OnInit {
   ];
   
   rowsPerPageOptions: DropdownOption[] = [
-    { label: '10', value: '10' },
-    { label: '25', value: '25' },
-    { label: '50', value: '50' },
-    { label: '100', value: '100' }
+    { label: '10', value: 10 },
+    { label: '25', value: 25 },
+    { label: '50', value: 50 },
+    { label: '100', value: 100 }
   ];
+
+  private uiConfigService = inject(UiConfigService);
 
   constructor(private reservationsFacade: ReservationsFacade) {
     this.reservations$ = this.reservationsFacade.reservations$;
@@ -90,34 +97,41 @@ export class ReservationsListPageComponent implements OnInit {
     this.reservationsFacade.loadReservations();
   }
 
-  onSearch(): void {
-    // Implement search functionality
-    console.log('Searching for:', this.searchTerm);
+  onSearchChange(): void {
+    this.applyFilters();
   }
 
-  onPaymentStatusChange(): void {
-    // Implement payment status filter
-    console.log('Payment status changed:', this.selectedPaymentStatus);
-  }
-
-  onReservationStatusChange(): void {
-    // Implement reservation status filter
-    console.log('Reservation status changed:', this.selectedReservationStatus);
+  onFiltersChange(): void {
+    this.applyFilters();
   }
 
   onDateRangeChange(): void {
-    // Implement date range filter
-    console.log('Date range changed:', this.startDate, this.endDate);
+    this.applyFilters();
   }
 
-  onRowsPerPageChange(): void {
-    // Implement rows per page change
-    console.log('Rows per page changed:', this.rowsPerPage);
+  onPageSizeChange(): void {
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    // Apply all current filters and reload data
+    this.loadReservations();
   }
 
   onExport(): void {
+    this.exporting = true;
     // Implement export functionality
-    console.log('Exporting data...');
+    setTimeout(() => {
+      this.exporting = false;
+    }, 2000);
+  }
+
+  formatDateTime(date: Date): string {
+    return this.uiConfigService.formatDate(date);
+  }
+
+  formatValue(reservation: ReservationBase): string {
+    return this.uiConfigService.formatCurrency(reservation.totalAmount || 0);
   }
 
   getPaymentStatusSeverity(status: string): string {
