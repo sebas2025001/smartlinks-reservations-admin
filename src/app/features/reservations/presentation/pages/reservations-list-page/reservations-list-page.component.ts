@@ -11,8 +11,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { CheckboxModule } from 'primeng/checkbox';
 import { Observable } from 'rxjs';
-import { ReservationsFacade } from '../../application/facades/reservations.facade';
-import { ReservationBase } from '../../../../shared/domain/models/reservation-base.model';
+import { ReservationsFacade } from '../../../application/facades/reservations.facade';
+import { ReservationBase } from '../../../../../shared/domain/models/reservation-base.model';
 
 interface DropdownOption {
   label: string;
