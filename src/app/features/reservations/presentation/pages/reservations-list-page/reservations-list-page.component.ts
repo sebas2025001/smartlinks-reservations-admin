@@ -59,6 +59,9 @@ export class ReservationsListPageComponent implements OnInit {
   // Export loading state
   exporting: boolean = false;
   
+  // Table selection
+  selectedReservations: ReservationBase[] = [];
+  
   // Dropdown options
   paymentStatusOptions: DropdownOption[] = [
     { label: 'Todos', value: 'all' },
