@@ -54,7 +54,7 @@ export class ReservationsListPageComponent implements OnInit {
   endDate: Date | null = null;
   
   // Pagination properties
-  rowsPerPage: number = 10;
+  pageSize: number = 10;
   
   // Export loading state
   exporting: boolean = false;
@@ -75,7 +75,7 @@ export class ReservationsListPageComponent implements OnInit {
     { label: 'Emitida', value: 'issued' }
   ];
   
-  rowsPerPageOptions: DropdownOption[] = [
+  pageSizeOptions: DropdownOption[] = [
     { label: '10', value: 10 },
     { label: '25', value: 25 },
     { label: '50', value: 50 },
