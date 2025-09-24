@@ -15,10 +15,11 @@ import { ReservationsFacade } from '../../../application/facades/reservations.fa
 import { ReservationBase } from '../../../../../shared/domain/models/reservation-base.model';
 import { UiConfigService } from '../../../../../shared/services/ui-config.service';
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface DropdownOption {
   label: string;
-  value: string;
+  value: string | number;
 }
 
 @Component({
@@ -86,6 +87,7 @@ export class ReservationsListPageComponent implements OnInit {
   ];
 
   private uiConfigService = inject(UiConfigService);
+  private router = inject(Router);
 
   constructor(private reservationsFacade: ReservationsFacade) {
     this.reservations$ = this.reservationsFacade.reservations$;
@@ -127,6 +129,10 @@ export class ReservationsListPageComponent implements OnInit {
     setTimeout(() => {
       this.exporting = false;
     }, 2000);
+  }
+
+  onViewReservation(reservation: ReservationBase): void {
+    this.router.navigate(['/reservas', reservation.id]);
   }
 
   formatDateTime(date: Date): string {
