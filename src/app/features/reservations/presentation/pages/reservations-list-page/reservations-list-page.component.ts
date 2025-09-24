@@ -125,7 +125,7 @@ export class ReservationsListPageComponent implements OnInit {
 
     const pagination = {
       page: 1,
-      pageSize: this.pageSize
+      size: this.pageSize
     };
 
     this.reservationsFacade.loadWithFilters(filters, pagination);
