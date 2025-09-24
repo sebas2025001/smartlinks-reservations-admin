@@ -95,11 +95,7 @@ export class ReservationsListPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadReservations();
-  }
-
-  loadReservations(): void {
-    this.reservationsFacade.loadReservations();
+    this.applyFilters();
   }
 
   onSearchChange(): void {
@@ -119,8 +115,30 @@ export class ReservationsListPageComponent implements OnInit {
   }
 
   private applyFilters(): void {
-    // Apply all current filters and reload data
-    this.loadReservations();
+    const filters = {
+      searchTerm: this.searchTerm,
+      paymentStatus: this.mapPaymentStatusToEnum(this.selectedPaymentStatus),
+      reservationStatus: this.mapReservationStatusToEnum(this.selectedReservationStatus),
+      startDate: this.startDate,
+      endDate: this.endDate
+    };
+
+    const pagination = {
+      page: 1,
+      pageSize: this.pageSize
+    };
+
+    this.reservationsFacade.loadWithFilters(filters, pagination);
+  }
+
+  private mapPaymentStatusToEnum(status: string): string | null {
+    if (status === 'all') return null;
+    return status;
+  }
+
+  private mapReservationStatusToEnum(status: string): string | null {
+    if (status === 'all') return null;
+    return status;
   }
 
   onExport(): void {
